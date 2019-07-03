@@ -1,11 +1,10 @@
 Population test;
-PVector goal  = new PVector(400, 10);
-
+PVector goal  = new PVector(750, 50);
 
 void setup() {
   size(800, 800); //size of the window
   frameRate(100);//increase this to make the dots go faster, default is 100
-  test = new Population(2000);//create a new population with 1000 members
+  test = new Population(4000);//create a new population with 1000 members
 }
 
 
@@ -17,7 +16,7 @@ void draw() {
   ellipse(goal.x, goal.y, 10, 10);
 
   //draw obstacle(s)
-  fill(0, 0, 255);
+  fill(233, 233, 233);
 
   rect(0, 300, 600, 10);
   rect(200, 500, 600, 10);

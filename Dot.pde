@@ -3,6 +3,7 @@ class Dot {
   PVector vel;
   PVector acc;
   Brain brain;
+  Collisions collision;
 
   boolean dead = false;
   boolean reachedGoal = false;
@@ -14,7 +15,8 @@ class Dot {
     brain = new Brain(1000);//new brain with 1000 instructions
 
     //start the dots at the bottom of the window with a no velocity or acceleration
-    pos = new PVector(width/2, height- 10);
+    //pos = new PVector(width/2, height- 10);
+    pos = new PVector(750,750);
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
   }
@@ -57,20 +59,18 @@ class Dot {
       move();
       if (pos.x< 2|| pos.y<2 || pos.x>width-2 || pos.y>height -2) {//if near the edges of the window then kill it 
         dead = true;
-      } else if (dist(pos.x, pos.y, goal.x, goal.y) < 5) {//if reached goal
+      } else if (collision.circleCircle(pos.x, pos.y, 2, goal.x, goal.y, 5)) {
         reachedGoal = true;
-      } else if (pos.x < 600 && pos.y < 310 && pos.x > 0 && pos.y > 300) {//if hit obstacle
-        // rect(0, 300, 600, 10);
+      } else if (collision.circleRect(pos.x, pos.y, 4, 0, 300, 600, 10)) {
+        dead = true;
+      } else if (collision.circleRect(pos.x, pos.y, 4, 200, 500, 600, 10)) {
+        dead = true;
+      } else if (collision.circleRect(pos.x, pos.y, 4, 200, 100, 700, 10)) {  
        dead = true;
-      } else if (pos.x < 800 && pos.y < 510 && pos.x > 200 && pos.y > 500) {
-        // rect(200, 500, 600, 10);
-        dead = true;
-      } else if (pos.x < 800 && pos.y < 110 && pos.x > 200 && pos.y > 100) {
-        // rect(200, 100, 700, 10);
-        dead = true;
       }
     }
   }
+
 
 
   //--------------------------------------------------------------------------------------------------------------------------------------
