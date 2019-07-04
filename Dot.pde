@@ -39,6 +39,11 @@ class Dot {
   //moves the dot according to the brains directions
   void move() {
 
+    if (isBest) {
+      //println("best:", pos.x, pos.y);
+      //point(pos.x, pos.y);
+    }
+    
     if (brain.directions.length > brain.step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array
       acc = brain.directions[brain.step];
       brain.step++;
@@ -61,12 +66,18 @@ class Dot {
         dead = true;
       } else if (collision.circleCircle(pos.x, pos.y, 2, goal.x, goal.y, 5)) {
         reachedGoal = true;
-      } else if (collision.circleRect(pos.x, pos.y, 4, 0, 300, 600, 10)) {
-        dead = true;
-      } else if (collision.circleRect(pos.x, pos.y, 4, 200, 500, 600, 10)) {
-        dead = true;
-      } else if (collision.circleRect(pos.x, pos.y, 4, 200, 100, 700, 10)) {  
-       dead = true;
+      } else {
+        for(Obstacle o : obsticles) {
+          if (o.type == "rect")
+            if (collision.circleRect(pos.x, pos.y, 4, o.x, o.y, o.w, o.h))
+              dead = true;
+        }
+      //} else if (collision.circleRect(pos.x, pos.y, 4, 0, 300, 600, 10)) {
+      //  dead = true;
+      //} else if (collision.circleRect(pos.x, pos.y, 4, 200, 500, 600, 10)) {
+      //  dead = true;
+      //} else if (collision.circleRect(pos.x, pos.y, 4, 200, 100, 700, 10)) {  
+      // dead = true;
       }
     }
   }

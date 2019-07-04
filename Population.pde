@@ -143,7 +143,9 @@ class Population {
     //if this dot reached the goal then reset the minimum number of steps it takes to get to the goal
     if (dots[bestDot].reachedGoal) {
       minStep = dots[bestDot].brain.step;
-      println("step:", minStep);
+      println("Generation: ", gen+1, "step:", minStep);
+    } else {
+      println("Generation: ", gen+1);
     }
   }
 }
