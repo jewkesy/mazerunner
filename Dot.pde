@@ -6,23 +6,50 @@ class Dot {
   Collisions collision;
 
   ArrayList<PVector> route;
+  ArrayList<PVector> furthestRoute;
 
+  String id;
   boolean dead = false;
   boolean reachedGoal = false;
   boolean isBest = false;//true if this dot is the best dot from the previous generation
   boolean isTraveller = false; //true is this dot travelled the furthest from the previous generation
 
   float fitness = 0;
+  
+  /**
+ * RandomStringFromSymbols
+ * Create a random string from an explicit list of symbols
+ * 2017-10-14 Jeremy Douglass - Processing 3.3.6
+ * forum.processing.org/two/discussion/24536/creating-a-random-but-unique-string
+ */
+  StringList idList;
+  int idLength = 10;
+  char[] idSymbols = {
+    '0','1','2','3','4','5','6','7','8','9',
+    'a','b','c','d','e','f','g','h','i','j','k','l','m',
+    'n','o','p','q','r','s','t','u','v','w','x','y','z',
+    'A','B','C','D','E','F','G','H','I','J','K','L','M',
+    'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+  };
+  String createID(int length){
+    String id = "";
+    for (int i = 0; i < length - 1; i++){
+      id = id + idSymbols[int(random(idSymbols.length))];
+    }
+    return id;
+  }
 
   Dot() {
     brain = new Brain(1000);//new brain with 1000 instructions
 
     //start the dots at the bottom of the window with a no velocity or acceleration
     //pos = new PVector(width/2, height- 10);
+    id = createID(idLength);
     pos = new PVector(750,750);
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
     route = new ArrayList<PVector>();
+    furthestRoute = new ArrayList<PVector>();
   }
 
 
@@ -32,15 +59,15 @@ class Dot {
     //if this dot is the best dot from the previous generation then draw it as a big green dot
    
     if (isBest) {
-      //println("found best");
+      //println("found best"); //<>//
       fill(53, 249, 124);
       ellipse(pos.x, pos.y, 8, 8);
     } else if (isTraveller){
       //println("found traveller");
       fill(249, 243, 152);
       ellipse(pos.x, pos.y, 8, 8);
-    } else {//all other dots are just smaller black dots
-      fill(0);
+    } else {//all other dots are just smaller dots
+      fill(10);
       ellipse(pos.x, pos.y, 4, 4);
     }
   }
@@ -59,8 +86,10 @@ class Dot {
     vel.add(acc);
     vel.limit(5);//not too fast
     pos.add(vel);
-    route.add(pos);
-    //println(route);
+    route.add(new PVector(pos.x, pos.y));
+    furthestRoute.add(new PVector(pos.x, pos.y));
+    
+    //println("Dot.move", route.size(), route);
   }
 
   //-------------------------------------------------------------------------------------------------------------------
@@ -81,9 +110,7 @@ class Dot {
       }
     }
   }
-
-
-
+  
   //--------------------------------------------------------------------------------------------------------------------------------------
   //calculates the fitness
   void calculateFitness() {

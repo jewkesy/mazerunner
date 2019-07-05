@@ -30,12 +30,27 @@ class Population {
   //update all dots 
   void update() {
     for (int i = 0; i< dots.length; i++) {
-      if (dots[i].brain.step > minStep) {//if the dot has already taken more steps than the best dot has taken to reach the goal
+      if (dots[i].brain.step > (minStep*1.10)) {//if the dot has already taken more steps than the best dot has taken to reach the goal
         dots[i].dead = true;//then it dead
       } else {
+        //println(dots[i].dead);
+        //if (dots[i].dead){
+        //  for (int j = 0; j< dots.length; j++) {
+        //    println(dots[i].id, dots[j].id);
+        //    if (dots[i].id == dots[j].id) continue;
+        //    if (!dots[j].dead) continue;
+        //    if (dots[i].dead && dots[j].dead) {
+        //      //dots[i].dead = false;
+        //    }
+        //  }
+        //}
         dots[i].update();
       }
     }
+  }
+
+  boolean corpseHere(int x, int y) {
+    return false;
   }
 
   //-----------------------------------------------------------------------------------------------------------------------------------
@@ -46,7 +61,6 @@ class Population {
     }
   }
 
-
   //------------------------------------------------------------------------------------------------------------------------------------
   //returns whether all the dots are either dead or have reached the goal
   boolean allDotsDead() {
@@ -55,13 +69,8 @@ class Population {
         return false;
       }
     }
-
     return true;
   }
-
-
-
-  //-------------------------------------------------------------------------------------------------------------------------------------
 
   //gets the next generation of dots
   void naturalSelection() {
@@ -69,12 +78,9 @@ class Population {
     setBestDot();
     calculateFitnessSum();
 
-    //println(bestDot, travellerDot);
-
-    //the champion lives on 
-    newDots[0] = dots[bestDot].gimmeBaby();
+    newDots[0] = dots[bestDot].gimmeBaby(); //the champion lives on 
     newDots[0].isBest = true;
-    newDots[1] = dots[travellerDot].gimmeBaby();
+    newDots[1] = dots[travellerDot].gimmeBaby(); //the traveller lives on 
     newDots[1].isTraveller = true;
 
     for (int i = 2; i< newDots.length; i++) {
@@ -87,8 +93,9 @@ class Population {
 
     dots = newDots.clone();
     gen ++;
+    //if (gen > 2) {exit();}
+    generationVal = gen;
   }
-
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   //you get it
@@ -108,8 +115,6 @@ class Population {
   //since dots with a higher fitness function add more to the running sum then they have a higher chance of being chosen
   Dot selectParent() {
     float rand = random(fitnessSum);
-
-
     float runningSum = 0;
 
     for (int i = 0; i< dots.length; i++) {
@@ -120,7 +125,6 @@ class Population {
     }
 
     //should never get to this point
-
     return null;
   }
 
@@ -155,19 +159,22 @@ class Population {
 
     bestDot = maxIndex;
     travellerDot = travellerIndex;
-    Dot d = dots[bestDot];
-    Dot t = dots[travellerDot];
-    //println(d.isBest, d.pos, d.route.size());
+    //Dot d = dots[bestDot];
+    //Dot t = dots[travellerDot];
+    bestRoute = dots[bestDot].route;
+    furthestRoute = dots[travellerDot].furthestRoute;
+    //println("Population.setBestDot", bestRoute.size()); //<>//
     
     nearest.x = dots[bestDot].pos.x;
     nearest.y = dots[bestDot].pos.y;
-
+    bestStepCount = dots[bestDot].brain.step;
     //if this dot reached the goal then reset the minimum number of steps it takes to get to the goal
     if (dots[bestDot].reachedGoal) {
       minStep = dots[bestDot].brain.step;
-      println("Generation: ", gen+1, "step:", minStep);
+      
+      //println("Generation: ", gen+1, "step:", minStep);
     } else {
-      println("Generation: ", gen+1);
+      //println("Generation: ", gen+1);
     }
   }
 }
