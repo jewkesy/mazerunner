@@ -5,9 +5,12 @@ class Dot {
   Brain brain;
   Collisions collision;
 
+  ArrayList<PVector> route;
+
   boolean dead = false;
   boolean reachedGoal = false;
   boolean isBest = false;//true if this dot is the best dot from the previous generation
+  boolean isTraveller = false; //true is this dot travelled the furthest from the previous generation
 
   float fitness = 0;
 
@@ -19,6 +22,7 @@ class Dot {
     pos = new PVector(750,750);
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
+    route = new ArrayList<PVector>();
   }
 
 
@@ -26,8 +30,14 @@ class Dot {
   //draws the dot on the screen
   void show() {
     //if this dot is the best dot from the previous generation then draw it as a big green dot
+   
     if (isBest) {
-      fill(0, 255, 0);
+      //println("found best");
+      fill(53, 249, 124);
+      ellipse(pos.x, pos.y, 8, 8);
+    } else if (isTraveller){
+      //println("found traveller");
+      fill(249, 243, 152);
       ellipse(pos.x, pos.y, 8, 8);
     } else {//all other dots are just smaller black dots
       fill(0);
@@ -38,12 +48,6 @@ class Dot {
   //-----------------------------------------------------------------------------------------------------------------------
   //moves the dot according to the brains directions
   void move() {
-
-    if (isBest) {
-      //println("best:", pos.x, pos.y);
-      //point(pos.x, pos.y);
-    }
-    
     if (brain.directions.length > brain.step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array
       acc = brain.directions[brain.step];
       brain.step++;
@@ -55,6 +59,8 @@ class Dot {
     vel.add(acc);
     vel.limit(5);//not too fast
     pos.add(vel);
+    route.add(pos);
+    //println(route);
   }
 
   //-------------------------------------------------------------------------------------------------------------------
@@ -72,12 +78,6 @@ class Dot {
             if (collision.circleRect(pos.x, pos.y, 4, o.x, o.y, o.w, o.h))
               dead = true;
         }
-      //} else if (collision.circleRect(pos.x, pos.y, 4, 0, 300, 600, 10)) {
-      //  dead = true;
-      //} else if (collision.circleRect(pos.x, pos.y, 4, 200, 500, 600, 10)) {
-      //  dead = true;
-      //} else if (collision.circleRect(pos.x, pos.y, 4, 200, 100, 700, 10)) {  
-      // dead = true;
       }
     }
   }

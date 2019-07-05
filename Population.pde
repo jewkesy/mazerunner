@@ -5,6 +5,7 @@ class Population {
   int gen = 1;
 
   int bestDot = 0;//the index of the best dot in the dots[]
+  int travellerDot = 0; // the index of the furthest travelling dot
 
   int minStep = 1000;
 
@@ -68,10 +69,15 @@ class Population {
     setBestDot();
     calculateFitnessSum();
 
+    //println(bestDot, travellerDot);
+
     //the champion lives on 
     newDots[0] = dots[bestDot].gimmeBaby();
     newDots[0].isBest = true;
-    for (int i = 1; i< newDots.length; i++) {
+    newDots[1] = dots[travellerDot].gimmeBaby();
+    newDots[1].isTraveller = true;
+
+    for (int i = 2; i< newDots.length; i++) {
       //select parent based on fitness
       Dot parent = selectParent();
 
@@ -128,17 +134,33 @@ class Population {
 
   //---------------------------------------------------------------------------------------------------------------------------------------------
   //finds the dot with the highest fitness and sets it as the best dot
+  //finds the dot who like to travel and puts that into the genetic pool
   void setBestDot() {
     float max = 0;
     int maxIndex = 0;
+    float traveller = 0;
+    int travellerIndex = 0;
+    
     for (int i = 0; i< dots.length; i++) {
       if (dots[i].fitness > max) {
         max = dots[i].fitness;
         maxIndex = i;
       }
+      
+      if (dots[i].route.size() > traveller) {
+        traveller = dots[i].route.size();
+        travellerIndex = i;
+      }
     }
 
     bestDot = maxIndex;
+    travellerDot = travellerIndex;
+    Dot d = dots[bestDot];
+    Dot t = dots[travellerDot];
+    //println(d.isBest, d.pos, d.route.size());
+    
+    nearest.x = dots[bestDot].pos.x;
+    nearest.y = dots[bestDot].pos.y;
 
     //if this dot reached the goal then reset the minimum number of steps it takes to get to the goal
     if (dots[bestDot].reachedGoal) {

@@ -1,3 +1,6 @@
+// http://www.jeffreythompson.org/collision-detection/
+
+
 static class Collisions {
   // CIRCLE/CIRCLE
   static boolean circleCircle(float c1x, float c1y, float c1r, float c2x, float c2y, float c2r) {
