@@ -30,7 +30,7 @@ class Population {
   //update all dots 
   void update() {
     for (int i = 0; i< dots.length; i++) {
-      if (dots[i].brain.step > (minStep*1.10)) {//if the dot has already taken more steps than the best dot has taken to reach the goal
+      if (dots[i].brain.step > (minStep)) {//if the dot has already taken more steps than the best dot has taken to reach the goal
         dots[i].dead = true;//then it dead
       } else {
         //println(dots[i].dead);
