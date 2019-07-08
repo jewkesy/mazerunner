@@ -11,7 +11,7 @@ class Dot {
   String id;
   boolean dead = false;
   boolean reachedGoal = false;
-  boolean isBest = false;//true if this dot is the best dot from the previous generation
+  boolean isBest = false; //true if this dot is the best dot from the previous generation
   boolean isTraveller = false; //true is this dot travelled the furthest from the previous generation
   float explorer = 0;
   float fitness = 0;
@@ -52,19 +52,16 @@ class Dot {
     furthestRoute = new ArrayList<PVector>();
   }
 
-
   //-----------------------------------------------------------------------------------------------------------------
   //draws the dot on the screen
   void show() {
-    //if this dot is the best dot from the previous generation then draw it as a big green dot
-   
     if (isBest) {
-      //println("found best"); //<>//
-      fill(53, 249, 124);
+      //println("found best");
+      fill(53, 249, 124); //if this dot is the best dot from the previous generation then draw it as a big green dot
       ellipse(pos.x, pos.y, 8, 8);
-    } else if (isTraveller){
+    } else if (isTraveller){ //<>//
       //println("found traveller");
-      fill(249, 243, 152);
+      fill(249, 243, 152); //if this dot is the furthest dot from the start then draw it as a big yellow dot
       ellipse(pos.x, pos.y, 8, 8);
     } else {//all other dots are just smaller dots
       fill(10);
@@ -105,27 +102,6 @@ class Dot {
         for(Obstacle o : obsticles) {
           if (o.type == "rect")
             if (collision.circleRect(pos.x, pos.y, 4, o.x, o.y, o.w, o.h)) {
-              //ArrayList<PVector> graveyardClone = new ArrayList<PVector>();
-              //for(PVector g : graveyard){
-              //  graveyardClone.add(new PVector(g.x, g.y));
-              //}
-             
-              //println("Sizes a:", graveyard.size(), graveyardClone.size());
-              //if (graveyardClone.size()==0) {
-              //  dead = true;
-              //  graveyard.add(pos);
-              //} else {
-              //  for(PVector g : graveyardClone){
-              //    //println("here",g);
-              //    if (g.x == pos.x && g.y == pos.y){
-              //      println("Found a grave");
-              //      dead = true;
-              //    } else {
-              //      dead = true;
-              //      graveyard.add(pos);
-              //    }
-              //  }
-              //}
               dead = true;
             }
         }

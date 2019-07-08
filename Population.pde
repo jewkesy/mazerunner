@@ -4,7 +4,7 @@ class Population {
   float fitnessSum;
   int gen = 1;
 
-  int bestDot = 0;//the index of the best dot in the dots[]
+  int bestDot = 0; //the index of the best dot in the dots[]
   int travellerDot = 0; // the index of the furthest travelling dot
 
   int minStep = 1000;
@@ -15,7 +15,6 @@ class Population {
       dots[i] = new Dot();
     }
   }
-
 
   //------------------------------------------------------------------------------------------------------------------------------
   //show all dots
@@ -31,19 +30,8 @@ class Population {
   void update() {
     for (int i = 0; i< dots.length; i++) {
       if (dots[i].brain.step > (minStep)) {//if the dot has already taken more steps than the best dot has taken to reach the goal
-        dots[i].dead = true;//then it dead
+        dots[i].dead = true; //then it dead
       } else {
-        //println(dots[i].dead);
-        //if (dots[i].dead){
-        //  for (int j = 0; j< dots.length; j++) {
-        //    println(dots[i].id, dots[j].id);
-        //    if (dots[i].id == dots[j].id) continue;
-        //    if (!dots[j].dead) continue;
-        //    if (dots[i].dead && dots[j].dead) {
-        //      //dots[i].dead = false;
-        //    }
-        //  }
-        //}
         dots[i].update();
       }
     }
@@ -156,11 +144,6 @@ class Population {
         traveller = dots[i].explorer;
         travellerIndex = i;
       }
-      
-      //if (dots[i].route.size() > traveller) {
-      //  traveller = dots[i].route.size();
-      //  travellerIndex = i;
-      //}
     }
 
     bestDot = maxIndex;
@@ -177,10 +160,6 @@ class Population {
     //if this dot reached the goal then reset the minimum number of steps it takes to get to the goal
     if (dots[bestDot].reachedGoal) {
       minStep = dots[bestDot].brain.step;
-      
-      //println("Generation: ", gen+1, "step:", minStep);
-    } else {
-      //println("Generation: ", gen+1);
     }
   }
 }
