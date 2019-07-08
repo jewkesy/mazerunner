@@ -13,7 +13,7 @@ class Dot {
   boolean reachedGoal = false;
   boolean isBest = false;//true if this dot is the best dot from the previous generation
   boolean isTraveller = false; //true is this dot travelled the furthest from the previous generation
-
+  float explorer = 0;
   float fitness = 0;
   
   /**
@@ -104,8 +104,30 @@ class Dot {
       } else {
         for(Obstacle o : obsticles) {
           if (o.type == "rect")
-            if (collision.circleRect(pos.x, pos.y, 4, o.x, o.y, o.w, o.h))
+            if (collision.circleRect(pos.x, pos.y, 4, o.x, o.y, o.w, o.h)) {
+              //ArrayList<PVector> graveyardClone = new ArrayList<PVector>();
+              //for(PVector g : graveyard){
+              //  graveyardClone.add(new PVector(g.x, g.y));
+              //}
+             
+              //println("Sizes a:", graveyard.size(), graveyardClone.size());
+              //if (graveyardClone.size()==0) {
+              //  dead = true;
+              //  graveyard.add(pos);
+              //} else {
+              //  for(PVector g : graveyardClone){
+              //    //println("here",g);
+              //    if (g.x == pos.x && g.y == pos.y){
+              //      println("Found a grave");
+              //      dead = true;
+              //    } else {
+              //      dead = true;
+              //      graveyard.add(pos);
+              //    }
+              //  }
+              //}
               dead = true;
+            }
         }
       }
     }
@@ -120,6 +142,12 @@ class Dot {
       float distanceToGoal = dist(pos.x, pos.y, goal.x, goal.y);
       fitness = 1.0/(distanceToGoal * distanceToGoal);
     }
+  }
+  
+  void calculateExplorer() {
+    float distanceFromStart = dist(pos.x, pos.y, 750,750);
+    explorer = distanceFromStart;
+    //println(explorer);
   }
 
   //---------------------------------------------------------------------------------------------------------------------------------------

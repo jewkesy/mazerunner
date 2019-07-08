@@ -58,6 +58,7 @@ class Population {
   void calculateFitness() {
     for (int i = 0; i< dots.length; i++) {
       dots[i].calculateFitness();
+      dots[i].calculateExplorer();
     }
   }
 
@@ -151,10 +152,15 @@ class Population {
         maxIndex = i;
       }
       
-      if (dots[i].route.size() > traveller) {
-        traveller = dots[i].route.size();
+      if (dots[i].explorer > traveller) {
+        traveller = dots[i].explorer;
         travellerIndex = i;
       }
+      
+      //if (dots[i].route.size() > traveller) {
+      //  traveller = dots[i].route.size();
+      //  travellerIndex = i;
+      //}
     }
 
     bestDot = maxIndex;

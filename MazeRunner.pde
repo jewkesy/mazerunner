@@ -6,10 +6,12 @@ ArrayList<PVector> furthestRoute = new ArrayList<PVector>();
 int generationVal = 1;
 int bestStepCount = -1;
 
+ArrayList<PVector> graveyard = new ArrayList<PVector>();
+
 void setup() {
   size(800, 800); //size of the window
   frameRate(200);//increase this to make the dots go faster, default is 100
-  test = new Population(2000);//create a new population with 1000 members
+  test = new Population(1000);//create a new population with 1000 members
 }
 
 Obstacle[] obsticles = new Obstacle[] {
@@ -55,7 +57,7 @@ void draw() {
     noFill();
     stroke(222, 224, 227);
     ellipse(goal.x, goal.y, dist(nearest.x, nearest.y, goal.x, goal.y)*2, dist(nearest.x, nearest.y, goal.x, goal.y)*2);
-    text(dist(nearest.x, nearest.y, goal.x, goal.y)*2,750, 70); 
+    text(dist(nearest.x, nearest.y, goal.x, goal.y)*2,700, 25); 
   }
   
   stroke(50, 50, 50);
@@ -76,6 +78,9 @@ void draw() {
     test.calculateFitness();
     test.naturalSelection();
     test.mutateDemBabies();
+    //println("before", graveyard.size());
+    //graveyard = new ArrayList<PVector>();
+    //println("After", graveyard.size());
   } else {
     //if any of the dots are still alive then update and then show them
 
