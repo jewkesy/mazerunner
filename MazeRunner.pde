@@ -10,7 +10,7 @@ ArrayList<PVector> graveyard = new ArrayList<PVector>();
 
 void setup() {
   size(800, 800); //size of the window
-  frameRate(100);//increase this to make the dots go faster, default is 100
+  frameRate(150);//increase this to make the dots go faster, default is 100
   test = new Population(2500);//create a new population with 1000 members
 }
 

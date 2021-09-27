@@ -69,10 +69,18 @@ class Population {
 
     newDots[0] = dots[bestDot].gimmeBaby(); //the champion lives on 
     newDots[0].isBest = true;
-    newDots[1] = dots[travellerDot].gimmeBaby(); //the traveller lives on 
-    newDots[1].isTraveller = true;
+    for (int i = 1; i < newDots.length/3; i++) {
+      newDots[i] = dots[bestDot].gimmeBaby();
+    }
+    
+    newDots[newDots.length/3] = dots[travellerDot].gimmeBaby(); //the traveller lives on 
+    newDots[newDots.length/3].isTraveller = true;
+    
+    for (int i = newDots.length/3+1; i < newDots.length/3+newDots.length/3; i++) {
+      newDots[i] = dots[travellerDot].gimmeBaby();
+    }
 
-    for (int i = 2; i< newDots.length; i++) {
+    for (int i = newDots.length/3+newDots.length/3; i < newDots.length; i++) {
       //select parent based on fitness
       Dot parent = selectParent();
 
@@ -107,7 +115,7 @@ class Population {
     float runningSum = 0;
 
     for (int i = 0; i< dots.length; i++) {
-      runningSum+= dots[i].fitness;
+      runningSum += dots[i].fitness;
       if (runningSum > rand) {
         return dots[i];
       }
@@ -127,7 +135,7 @@ class Population {
 
   //---------------------------------------------------------------------------------------------------------------------------------------------
   //finds the dot with the highest fitness and sets it as the best dot
-  //finds the dot who like to travel and puts that into the genetic pool
+  //finds the dot who liked to travel and puts that into the genetic pool
   void setBestDot() {
     float max = 0;
     int maxIndex = 0;

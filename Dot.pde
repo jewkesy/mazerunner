@@ -72,7 +72,8 @@ class Dot {
   //-----------------------------------------------------------------------------------------------------------------------
   //moves the dot according to the brains directions
   void move() {
-    if (brain.directions.length > brain.step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array
+    //println(acc);
+    if (brain.directions.length > brain.step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array //<>//
       acc = brain.directions[brain.step];
       brain.step++;
     } else {//if at the end of the directions array then the dot is dead
@@ -88,6 +89,10 @@ class Dot {
     
     //println("Dot.move", route.size(), route);
   }
+  
+  // hit an obstacle, so bounce off
+  void Bounce() {
+  }
 
   //-------------------------------------------------------------------------------------------------------------------
   //calls the move function and check for collisions and stuff
@@ -96,6 +101,7 @@ class Dot {
       move();
       if (pos.x< 2|| pos.y<2 || pos.x>width-2 || pos.y>height -2) {//if near the edges of the window then kill it 
         dead = true;
+        //Bounce();
       } else if (collision.circleCircle(pos.x, pos.y, 2, goal.x, goal.y, 5)) {
         reachedGoal = true;
       } else {
@@ -103,6 +109,7 @@ class Dot {
           if (o.type == "rect")
             if (collision.circleRect(pos.x, pos.y, 4, o.x, o.y, o.w, o.h)) {
               dead = true;
+              //Bounce();
             }
         }
       }
