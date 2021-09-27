@@ -69,18 +69,21 @@ class Population {
 
     newDots[0] = dots[bestDot].gimmeBaby(); //the champion lives on 
     newDots[0].isBest = true;
-    for (int i = 1; i < newDots.length/3; i++) {
+    
+    int groupSize = newDots.length/4;
+    
+    for (int i = 1; i < groupSize; i++) {
       newDots[i] = dots[bestDot].gimmeBaby();
     }
     
-    newDots[newDots.length/3] = dots[travellerDot].gimmeBaby(); //the traveller lives on 
-    newDots[newDots.length/3].isTraveller = true;
+    newDots[groupSize] = dots[travellerDot].gimmeBaby(); //the traveller lives on 
+    newDots[groupSize].isTraveller = true;
     
-    for (int i = newDots.length/3+1; i < newDots.length/3+newDots.length/3; i++) {
+    for (int i = groupSize+1; i < newDots.length; i++) {
       newDots[i] = dots[travellerDot].gimmeBaby();
     }
 
-    for (int i = newDots.length/3+newDots.length/3; i < newDots.length; i++) {
+    for (int i = (groupSize*2)+1; i < newDots.length; i++) {
       //select parent based on fitness
       Dot parent = selectParent();
 
@@ -160,7 +163,7 @@ class Population {
     //Dot t = dots[travellerDot];
     bestRoute = dots[bestDot].route;
     furthestRoute = dots[travellerDot].furthestRoute;
-    //println("Population.setBestDot", bestRoute.size()); //<>//
+    //println("Population.setBestDot", bestRoute.size()); //<>// //<>//
     
     nearest.x = dots[bestDot].pos.x;
     nearest.y = dots[bestDot].pos.y;

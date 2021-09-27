@@ -40,7 +40,7 @@ class Dot {
   }
 
   Dot() {
-    brain = new Brain(1000);//new brain with 1000 instructions
+    brain = new Brain(1000); //new brain with 1000 instructions
 
     //start the dots at the bottom of the window with a no velocity or acceleration
     //pos = new PVector(width/2, height- 10);
@@ -71,7 +71,7 @@ class Dot {
 
   //-----------------------------------------------------------------------------------------------------------------------
   //moves the dot according to the brains directions
-  void move() {
+  void move(int bounceVal) {
     //println(acc);
     if (brain.directions.length > brain.step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array //<>//
       acc = brain.directions[brain.step];
@@ -83,33 +83,38 @@ class Dot {
     //apply the acceleration and move the dot
     vel.add(acc);
     vel.limit(5);//not too fast
+    vel.x = vel.x * bounceVal;
+    vel.y = vel.y * bounceVal;
     pos.add(vel);
     route.add(new PVector(pos.x, pos.y));
     furthestRoute.add(new PVector(pos.x, pos.y));
-    
+    //println(vel.x, vel.y);
     //println("Dot.move", route.size(), route);
+    //println("Dot.move", route.size());
   }
   
   // hit an obstacle, so bounce off
   void Bounce() {
+    route.remove(route.size()-1);
+    move(-1);
   }
 
   //-------------------------------------------------------------------------------------------------------------------
   //calls the move function and check for collisions and stuff
   void update() {
     if (!dead && !reachedGoal) {
-      move();
-      if (pos.x< 2|| pos.y<2 || pos.x>width-2 || pos.y>height -2) {//if near the edges of the window then kill it 
-        dead = true;
-        //Bounce();
+      move(1);
+      if (pos.x < 2|| pos.y < 2 || pos.x > width-2 || pos.y > height -2) { //if near the edges of the window then kill it 
+        Bounce();
+        //dead = true;
       } else if (collision.circleCircle(pos.x, pos.y, 2, goal.x, goal.y, 5)) {
         reachedGoal = true;
       } else {
         for(Obstacle o : obsticles) {
           if (o.type == "rect")
             if (collision.circleRect(pos.x, pos.y, 4, o.x, o.y, o.w, o.h)) {
-              dead = true;
-              //Bounce();
+              Bounce();
+              //dead = true;
             }
         }
       }
@@ -128,7 +133,7 @@ class Dot {
   }
   
   void calculateExplorer() {
-    float distanceFromStart = dist(pos.x, pos.y, 750,750);
+    float distanceFromStart = dist(pos.x, pos.y, 750, 750);
     explorer = distanceFromStart;
     //println(explorer);
   }
