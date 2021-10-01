@@ -40,7 +40,7 @@ class Dot {
   }
 
   Dot() {
-    brain = new Brain(1000); //new brain with 1000 instructions
+    brain = new Brain(brainSize); //new brain with 1000 instructions
 
     //start the dots at the bottom of the window with a no velocity or acceleration
     //pos = new PVector(width/2, height- 10);
@@ -71,7 +71,7 @@ class Dot {
 
   //-----------------------------------------------------------------------------------------------------------------------
   //moves the dot according to the brains directions
-  void move(int bounceVal) {
+  void move(float bounceVal) {
     //println(acc);
     if (brain.directions.length > brain.step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array //<>//
       acc = brain.directions[brain.step];
@@ -95,7 +95,7 @@ class Dot {
   
   // hit an obstacle, so bounce off
   void Bounce() {
-    route.remove(route.size()-1);
+    //route.remove(route.size()-1);
     move(-1);
   }
 
@@ -104,15 +104,15 @@ class Dot {
   void update() {
     if (!dead && !reachedGoal) {
       move(1);
-      if (pos.x < 2|| pos.y < 2 || pos.x > width-2 || pos.y > height -2) { //if near the edges of the window then kill it 
+      if (pos.x < 2 || pos.y < 2 || pos.x > width - 2 || pos.y > height - 2) { //if near the edges of the window then kill it 
         Bounce();
         //dead = true;
-      } else if (collision.circleCircle(pos.x, pos.y, 2, goal.x, goal.y, 5)) {
+      } else if (collision.circleCircle(pos.x, pos.y, 4, goal.x, goal.y, 10)) {
         reachedGoal = true;
       } else {
         for(Obstacle o : obsticles) {
           if (o.type == "rect")
-            if (collision.circleRect(pos.x, pos.y, 4, o.x, o.y, o.w, o.h)) {
+            if (collision.circleRect(pos.x, pos.y, 2, o.x, o.y, o.w, o.h)) {
               Bounce();
               //dead = true;
             }

@@ -5,13 +5,14 @@ ArrayList<PVector> bestRoute = new ArrayList<PVector>();
 ArrayList<PVector> furthestRoute = new ArrayList<PVector>();
 int generationVal = 1;
 int bestStepCount = -1;
+int brainSize = 2000;
 
 ArrayList<PVector> graveyard = new ArrayList<PVector>();
 
 void setup() {
   size(800, 800); //size of the window
-  frameRate(60); //increase this to make the dots go faster, default is 100
-  test = new Population(2000);//create a new population with 1000 members
+  frameRate(120); //increase this to make the dots go faster, default is 100
+  test = new Population(3000);//create a new population with 1000 members
 }
 
 Obstacle[] obsticles = new Obstacle[] {
@@ -27,23 +28,29 @@ Obstacle[] obsticles = new Obstacle[] {
   //new Obstacle("rect", 0, 300, 300, 10), 
   //new Obstacle("rect", 350, 300, 250, 10), 
   
+  new Obstacle("rect", 200, 100, 600, 10),
+  
+  new Obstacle("rect", 0, 200, 600, 10),
+  
+  new Obstacle("rect", 200, 300, 600, 10),
+  
+  new Obstacle("rect", 0, 400, 600, 10),
+  
   new Obstacle("rect", 200, 500, 600, 10),
+
+  new Obstacle("rect", 0, 600, 600, 10),
+  
+  new Obstacle("rect", 200, 700, 600, 10),
   
   // vertical, without gaps
-  new Obstacle("rect", 700, 0, 10, 400)
+  //new Obstacle("rect", 700, 0, 10, 400)
   
 };
 
 void draw() { 
   background(255);
   stroke(0,0,0);
-  
-  //draw generation info
-  textSize(32);
-  fill(0, 102, 153);
-  if (bestStepCount == -1) text("Generation: " + generationVal, 20, height-20);
-  else text("Generation: " + generationVal + " (" + bestStepCount + ")", 20, height-20);
-  
+    
   //draw goal
   fill(249, 83, 53);
   ellipse(goal.x, goal.y, 15, 15);
@@ -75,6 +82,12 @@ void draw() {
   }
   
   stroke(0,0,0);
+  
+  //draw generation info
+  textSize(32);
+  fill(0, 102, 153);
+  if (bestStepCount == -1) text("Generation: " + generationVal, 20, height-20);
+  else text("Generation: " + generationVal + " (" + bestStepCount + ")", 20, height-20);
 
   if (test.allDotsDead()) {
     //genetic algorithm

@@ -13,7 +13,7 @@ static class Collisions {
   
     // if the distance is less than the sum of the circle's
     // radii, the circles are touching!
-    if (distance <= c1r+c2r) {
+    if (distance < c1r+c2r) {
       return true;
     }
     return false;
@@ -38,7 +38,7 @@ static class Collisions {
     float distance = sqrt( (distX*distX) + (distY*distY) );
   
     // if the distance is less than the radius, collision!
-    if (distance <= radius) {
+    if (distance < radius) {
       return true;
     }
     return false;
