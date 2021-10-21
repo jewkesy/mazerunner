@@ -15,6 +15,7 @@ class Dot {
   boolean isTraveller = false; //true is this dot travelled the furthest from the previous generation
   float explorer = 0;
   float fitness = 0;
+  int dotWidth = 4;
   
   /**
  * RandomStringFromSymbols
@@ -58,22 +59,22 @@ class Dot {
     if (isBest) {
       //println("found best");
       fill(53, 249, 124); //if this dot is the best dot from the previous generation then draw it as a big green dot
-      ellipse(pos.x, pos.y, 8, 8);
+      ellipse(pos.x, pos.y, dotWidth*2, dotWidth*2);
     } else if (isTraveller){ //<>//
       //println("found traveller");
       fill(249, 243, 152); //if this dot is the furthest dot from the start then draw it as a big yellow dot
-      ellipse(pos.x, pos.y, 8, 8);
+      ellipse(pos.x, pos.y, dotWidth*2, dotWidth*2);
     } else {//all other dots are just smaller dots
       fill(10);
-      ellipse(pos.x, pos.y, 4, 4);
+      ellipse(pos.x, pos.y, dotWidth, dotWidth);
     }
   }
 
   //-----------------------------------------------------------------------------------------------------------------------
   //moves the dot according to the brains directions
-  void move(float bounceVal) {
+  void move(float bounceValX, float bounceValY) {
     //println(acc);
-    if (brain.directions.length > brain.step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array //<>//
+    if (brain.directions.length > brain.step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array
       acc = brain.directions[brain.step];
       brain.step++;
     } else {//if at the end of the directions array then the dot is dead
@@ -83,8 +84,8 @@ class Dot {
     //apply the acceleration and move the dot
     vel.add(acc);
     vel.limit(5);//not too fast
-    vel.x = vel.x * bounceVal;
-    vel.y = vel.y * bounceVal;
+    vel.x = vel.x * bounceValX;
+    vel.y = vel.y * bounceValY;
     pos.add(vel);
     route.add(new PVector(pos.x, pos.y));
     furthestRoute.add(new PVector(pos.x, pos.y));
@@ -94,30 +95,42 @@ class Dot {
   }
   
   // hit an obstacle, so bounce off
-  void Bounce() {
-    //route.remove(route.size()-1);
-    move(-1);
+  void Bounce(float bounceValX, float bounceValY) {
+    route.remove(route.size()-1);
+    move(bounceValX, bounceValY);
   }
 
   //-------------------------------------------------------------------------------------------------------------------
   //calls the move function and check for collisions and stuff
   void update() {
     if (!dead && !reachedGoal) {
-      move(1);
-      if (pos.x < 2 || pos.y < 2 || pos.x > width - 2 || pos.y > height - 2) { //if near the edges of the window then kill it 
-        Bounce();
+      move(1, 1);
+      //if (pos.x < dotWidth || pos.y < dotWidth/2 || pos.x > width - dotWidth/2 || pos.y > height - dotWidth/2) { //if near the edges of the window then bounce off
+      if (pos.x < dotWidth || pos.x > width - dotWidth) {
+        Bounce(-1, 1);
         //dead = true;
-      } else if (collision.circleCircle(pos.x, pos.y, 4, goal.x, goal.y, 10)) {
+      } else if (pos.y < dotWidth || pos.y > height - dotWidth) {
+        //dead = true;
+        Bounce(1, -1);
+      } else if (collision.circleCircle(pos.x, pos.y, dotWidth/2, goal.x, goal.y, 10)) {
         reachedGoal = true;
       } else {
         for(Obstacle o : obsticles) {
           if (o.type == "rect")
-            if (collision.circleRect(pos.x, pos.y, 2, o.x, o.y, o.w, o.h)) {
-              Bounce();
+            if (collision.circleRect(pos.x, pos.y, dotWidth, o.x, o.y, o.w, o.h)) {
+              Bounce(1, -1);
               //dead = true;
             }
+            if(pos.x > o.x && pos.x < o.x + o.w && pos.y > o.y && pos.y < o.y + o.h) {
+              //the point is inside the rectangle
+              dead = true;
+            }
+        
         }
       }
+       
+      if (pos.x > width || pos.x < 0) dead = true;
+      if (pos.y > height || pos.y < 0) dead = true;
     }
   }
   

@@ -11,8 +11,8 @@ ArrayList<PVector> graveyard = new ArrayList<PVector>();
 
 void setup() {
   size(800, 800); //size of the window
-  frameRate(120); //increase this to make the dots go faster, default is 100
-  test = new Population(3000);//create a new population with 1000 members
+  frameRate(60); //increase this to make the dots go faster, default is 100
+  test = new Population(1000);//create a new population with 1000 members
 }
 
 Obstacle[] obsticles = new Obstacle[] {
@@ -28,23 +28,33 @@ Obstacle[] obsticles = new Obstacle[] {
   //new Obstacle("rect", 0, 300, 300, 10), 
   //new Obstacle("rect", 350, 300, 250, 10), 
   
-  new Obstacle("rect", 200, 100, 600, 10),
+  // Maze
+  //new Obstacle("rect", 200, 100, 900, 30),
   
-  new Obstacle("rect", 0, 200, 600, 10),
+  //new Obstacle("rect", -300, 200, 700, 30),
   
-  new Obstacle("rect", 200, 300, 600, 10),
+  //new Obstacle("rect", 200, 300, 900, 30),
   
-  new Obstacle("rect", 0, 400, 600, 10),
+  //new Obstacle("rect", -300, 400, 700, 30),
   
-  new Obstacle("rect", 200, 500, 600, 10),
+  //new Obstacle("rect", 200, 500, 900, 30),
 
-  new Obstacle("rect", 0, 600, 600, 10),
+  //new Obstacle("rect", -300, 600, 700, 30),
   
-  new Obstacle("rect", 200, 700, 600, 10),
+  //new Obstacle("rect", 200, 700, 900, 30),
+  //// End Maze
   
   // vertical, without gaps
   //new Obstacle("rect", 700, 0, 10, 400)
   
+  // X, Y, width, height
+  new Obstacle("rect", 700, 100, 100, 100),
+  
+  new Obstacle("rect", 30, 30, 50, 50),
+  
+  new Obstacle("rect", 130, 130, 150, 150),
+  
+  new Obstacle("rect", 230, 230, 100, 100),
 };
 
 void draw() { 

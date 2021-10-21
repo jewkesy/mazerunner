@@ -7,7 +7,7 @@ class Population {
   int bestDot = 0; //the index of the best dot in the dots[]
   int travellerDot = 0; // the index of the furthest travelling dot
 
-  int minStep = 2000;
+  int minStep = brainSize;
 
   Population(int size) {
     dots = new Dot[size];
