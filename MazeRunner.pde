@@ -14,48 +14,7 @@ void setup() {
   frameRate(60); //increase this to make the dots go faster, default is 100
   test = new Population(1000);//create a new population with 1000 members
 }
-
-Obstacle[] obsticles = new Obstacle[] {
-  // horizontal, without gaps
-  //new Obstacle("rect", 0, 300, 600, 10), 
-  //new Obstacle("rect", 200, 500, 600, 10),
-  //new Obstacle("rect", 200, 100, 700, 10), 
-  
-  // horizontal, with gaps
-  //new Obstacle("rect", 200, 100, 300, 10),
-  //new Obstacle("rect", 550, 100, 250, 10), 
-  
-  //new Obstacle("rect", 0, 300, 300, 10), 
-  //new Obstacle("rect", 350, 300, 250, 10), 
-  
-  // Maze
-  //new Obstacle("rect", 200, 100, 900, 30),
-  
-  //new Obstacle("rect", -300, 200, 700, 30),
-  
-  //new Obstacle("rect", 200, 300, 900, 30),
-  
-  //new Obstacle("rect", -300, 400, 700, 30),
-  
-  //new Obstacle("rect", 200, 500, 900, 30),
-
-  //new Obstacle("rect", -300, 600, 700, 30),
-  
-  //new Obstacle("rect", 200, 700, 900, 30),
-  //// End Maze
-  
-  // vertical, without gaps
-  //new Obstacle("rect", 700, 0, 10, 400)
-  
-  // X, Y, width, height
-  new Obstacle("rect", 700, 100, 100, 100),
-  
-  new Obstacle("rect", 30, 30, 50, 50),
-  
-  new Obstacle("rect", 130, 130, 150, 150),
-  
-  new Obstacle("rect", 230, 230, 100, 100),
-};
+ArrayList<Obsticle> obsticles = new ArrayList<Obsticle>();
 
 void draw() { 
   background(255);
@@ -64,13 +23,16 @@ void draw() {
   //draw goal
   fill(249, 83, 53);
   ellipse(goal.x, goal.y, 15, 15);
-  //println(nearest);
 
-  
   //draw obstacle(s)
   fill(233, 233, 233);
-  for(Obstacle o : obsticles) {
+  for(Obsticle o : obsticles) {
     if (o.type == "rect") rect(o.x, o.y, o.w, o.h);
+  }
+
+  if (boxing) {
+    fill(133, 133, 133);
+    rect(x1, y1, x2-x1, y2-y1);
   }
 
   if (nearest.x != -1 && nearest.y != -1) {
@@ -109,4 +71,22 @@ void draw() {
     test.update();
     test.show();
   }
+}
+
+int x1,y1,x2,y2;
+boolean boxing = false;
+
+void mousePressed(){
+  boxing = true;
+  x1 = x2 = mouseX;
+  y1 = y2 = mouseY; 
+}
+void mouseDragged(){
+  x2 = mouseX;
+  y2 = mouseY;
+}
+void mouseReleased() {
+  boxing = false;
+  Obsticle o = new Obsticle("rect", x1, y1, x2-x1, y2-y1);
+  obsticles.add(o);
 }

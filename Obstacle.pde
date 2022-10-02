@@ -1,4 +1,4 @@
-class Obstacle {
+class Obsticle {
   String type;
   int x;
   int y;
@@ -6,7 +6,7 @@ class Obstacle {
   int h;
 
   // Constructor
-  Obstacle(String typeTemp, int xTemp, int yTemp, int wTemp, int hTemp) {
+  Obsticle(String typeTemp, int xTemp, int yTemp, int wTemp, int hTemp) {
     type = typeTemp;
     x = xTemp;
     y = yTemp;

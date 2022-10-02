@@ -70,20 +70,20 @@ class Population {
     newDots[0] = dots[bestDot].gimmeBaby(); //the champion lives on 
     newDots[0].isBest = true;
     
-    int groupSize = newDots.length/4;
+    //int groupSize = newDots.length/2;
     
-    for (int i = 1; i < groupSize; i++) {
-      newDots[i] = dots[bestDot].gimmeBaby();
-    }
+    //for (int i = 1; i < groupSize; i++) {
+    //  newDots[i] = dots[bestDot].gimmeBaby();
+    //}
     
-    newDots[groupSize] = dots[travellerDot].gimmeBaby(); //the traveller lives on 
-    newDots[groupSize].isTraveller = true;
+    //newDots[groupSize] = dots[travellerDot].gimmeBaby(); //the traveller lives on 
+    //newDots[groupSize].isTraveller = true;
     
-    for (int i = groupSize+1; i < newDots.length; i++) {
-      newDots[i] = dots[travellerDot].gimmeBaby();
-    }
+    //for (int i = groupSize+1; i < newDots.length; i++) {
+    //  newDots[i] = dots[travellerDot].gimmeBaby();
+    //}
 
-    for (int i = (groupSize*2)+1; i < newDots.length; i++) {
+    for (int i = 1; i < newDots.length; i++) {
       //select parent based on fitness
       Dot parent = selectParent();
 
@@ -131,7 +131,7 @@ class Population {
   //------------------------------------------------------------------------------------------------------------------------------------------
   //mutates all the brains of the babies
   void mutateDemBabies() {
-    for (int i = 1; i< dots.length; i++) {
+    for (int i = 1; i < dots.length; i++) {
       dots[i].brain.mutate();
     }
   }

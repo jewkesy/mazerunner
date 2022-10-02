@@ -73,7 +73,7 @@ class Dot {
   //-----------------------------------------------------------------------------------------------------------------------
   //moves the dot according to the brains directions
   void move(float bounceValX, float bounceValY) {
-    //println(acc);
+
     if (brain.directions.length > brain.step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array
       acc = brain.directions[brain.step];
       brain.step++;
@@ -107,19 +107,19 @@ class Dot {
       move(1, 1);
       //if (pos.x < dotWidth || pos.y < dotWidth/2 || pos.x > width - dotWidth/2 || pos.y > height - dotWidth/2) { //if near the edges of the window then bounce off
       if (pos.x < dotWidth || pos.x > width - dotWidth) {
-        Bounce(-1, 1);
-        //dead = true;
+        //Bounce(-1, 1);
+        dead = true;
       } else if (pos.y < dotWidth || pos.y > height - dotWidth) {
-        //dead = true;
-        Bounce(1, -1);
+        dead = true;
+        //Bounce(1, -1);
       } else if (collision.circleCircle(pos.x, pos.y, dotWidth/2, goal.x, goal.y, 10)) {
         reachedGoal = true;
       } else {
-        for(Obstacle o : obsticles) {
+        for(Obsticle o : obsticles) {
           if (o.type == "rect")
             if (collision.circleRect(pos.x, pos.y, dotWidth, o.x, o.y, o.w, o.h)) {
-              Bounce(1, -1);
-              //dead = true;
+              //Bounce(1, -1);
+              dead = true;
             }
             if(pos.x > o.x && pos.x < o.x + o.w && pos.y > o.y && pos.y < o.y + o.h) {
               //the point is inside the rectangle
