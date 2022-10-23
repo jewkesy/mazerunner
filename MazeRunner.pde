@@ -5,7 +5,9 @@ ArrayList<PVector> bestRoute = new ArrayList<PVector>();
 ArrayList<PVector> furthestRoute = new ArrayList<PVector>();
 int generationVal = 1;
 int bestStepCount = -1;
-int brainSize = 2000;
+int brainSize = 2500;
+boolean started = false;
+boolean paused = true;
 
 ArrayList<PVector> graveyard = new ArrayList<PVector>();
 
@@ -19,6 +21,7 @@ ArrayList<Obsticle> obsticles = new ArrayList<Obsticle>();
 void draw() { 
   background(255);
   stroke(0,0,0);
+  textAlign(LEFT);
     
   //draw goal
   fill(249, 83, 53);
@@ -39,54 +42,40 @@ void draw() {
     noFill();
     stroke(222, 224, 227);
     ellipse(goal.x, goal.y, dist(nearest.x, nearest.y, goal.x, goal.y)*2, dist(nearest.x, nearest.y, goal.x, goal.y)*2);
-    //text(dist(nearest.x, nearest.y, goal.x, goal.y)*2,700, 25); 
   }
   
   stroke(50, 50, 50);
-  for(PVector p : bestRoute){
-    //println("MazeRunner.draw", p, bestRoute.size()); //<>//
+  for(PVector p : bestRoute){ //<>//
     point(p.x, p.y);
   }
   stroke(255, 87, 51);
   for(PVector p : furthestRoute){
-    //println("MazeRunner.draw", p, furthestRoute.size());
     point(p.x, p.y);
   }
   
   stroke(0,0,0);
-  
-  //draw generation info
   textSize(32);
   fill(0, 102, 153);
-  if (bestStepCount == -1) text("Generation: " + generationVal, 20, height-20);
-  else text("Generation: " + generationVal + " (" + bestStepCount + ")", 20, height-20);
-
-  if (test.allDotsDead()) {
-    //genetic algorithm
-    test.calculateFitness();
-    test.naturalSelection();
-    test.mutateDemBabies();
+    
+  if (started) {
+    //draw generation info
+    if (bestStepCount == -1) text("Generation: " + generationVal, 20, height-20);
+    else text("Generation: " + generationVal + " (" + bestStepCount + ")", 20, height-20);
+  
+    if (test.allDotsDead()) {
+      //genetic algorithm
+      test.calculateFitness();
+      test.naturalSelection();
+      test.mutateDemBabies();
+    } else {
+      //if any of the dots are still alive then update and then show them
+      if (paused) { textSize(48); textAlign(CENTER); text("PRESS SPACE TO CONTINUE", width/2, height/2); }
+      else test.update();
+      test.show();
+    }
   } else {
-    //if any of the dots are still alive then update and then show them
-    test.update();
-    test.show();
+    textSize(48);
+    textAlign(CENTER);
+    text("PRESS SPACE TO START", width/2, height/2);
   }
-}
-
-int x1,y1,x2,y2;
-boolean boxing = false;
-
-void mousePressed(){
-  boxing = true;
-  x1 = x2 = mouseX;
-  y1 = y2 = mouseY; 
-}
-void mouseDragged(){
-  x2 = mouseX;
-  y2 = mouseY;
-}
-void mouseReleased() {
-  boxing = false;
-  Obsticle o = new Obsticle("rect", x1, y1, x2-x1, y2-y1);
-  obsticles.add(o);
 }
