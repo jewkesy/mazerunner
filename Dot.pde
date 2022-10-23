@@ -3,7 +3,6 @@ class Dot {
   PVector vel;
   PVector acc;
   Brain brain;
-  Collisions collision;
 
   ArrayList<PVector> route;
   ArrayList<PVector> furthestRoute;
@@ -17,7 +16,7 @@ class Dot {
   float fitness = 0;
   int dotWidth = 4;
   
-  /**
+ /**
  * RandomStringFromSymbols
  * Create a random string from an explicit list of symbols
  * 2017-10-14 Jeremy Douglass - Processing 3.3.6
@@ -112,12 +111,12 @@ class Dot {
       } else if (pos.y < dotWidth || pos.y > height - dotWidth) {
         dead = true;
         //Bounce(1, -1);
-      } else if (collision.circleCircle(pos.x, pos.y, dotWidth/2, goal.x, goal.y, 10)) {
+      } else if (Collisions.circleCircle(pos.x, pos.y, dotWidth/2, goal.x, goal.y, 10)) {
         reachedGoal = true;
       } else {
         for(Obsticle o : obsticles) {
           if (o.type == "rect")
-            if (collision.circleRect(pos.x, pos.y, dotWidth, o.x, o.y, o.w, o.h)) {
+            if (Collisions.circleRect(pos.x, pos.y, dotWidth, o.x, o.y, o.w, o.h)) {
               //Bounce(1, -1);
               dead = true;
             }

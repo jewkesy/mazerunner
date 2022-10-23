@@ -6,15 +6,17 @@ ArrayList<PVector> furthestRoute = new ArrayList<PVector>();
 int generationVal = 1;
 int bestStepCount = -1;
 int brainSize = 2500;
+int population = 2000;
 boolean started = false;
 boolean paused = true;
+float mutationRate = 0.03;
 
 ArrayList<PVector> graveyard = new ArrayList<PVector>();
 
 void setup() {
   size(800, 800); //size of the window
   frameRate(60); //increase this to make the dots go faster, default is 100
-  test = new Population(1000);//create a new population with 1000 members
+  test = new Population(population);//create a new population with 1000 members
 }
 ArrayList<Obsticle> obsticles = new ArrayList<Obsticle>();
 
@@ -28,8 +30,9 @@ void draw() {
   ellipse(goal.x, goal.y, 15, 15);
 
   //draw obstacle(s)
-  fill(233, 233, 233);
   for(Obsticle o : obsticles) {
+    fill(233, 233, 233);
+    if (Collisions.circleRect(mouseX, mouseY, 1, o.x, o.y, o.w, o.h)) fill(233, 0, 0);
     if (o.type == "rect") rect(o.x, o.y, o.w, o.h);
   }
 
@@ -61,6 +64,9 @@ void draw() {
     //draw generation info
     if (bestStepCount == -1) text("Generation: " + generationVal, 20, height-20);
     else text("Generation: " + generationVal + " (" + bestStepCount + ")", 20, height-20);
+    
+    textAlign(RIGHT);
+    text("Mutation Rate: " + mutationRate, width-20, height-20); 
   
     if (test.allDotsDead()) {
       //genetic algorithm
@@ -69,8 +75,9 @@ void draw() {
       test.mutateDemBabies();
     } else {
       //if any of the dots are still alive then update and then show them
-      if (paused) { textSize(48); textAlign(CENTER); text("PRESS SPACE TO CONTINUE", width/2, height/2); }
-      else test.update();
+      if (paused) { 
+        textSize(48); textAlign(CENTER); text("PRESS SPACE TO CONTINUE", width/2, height/2); 
+      } else test.update();
       test.show();
     }
   } else {
