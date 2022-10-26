@@ -6,6 +6,7 @@ ArrayList<PVector> furthestRoute = new ArrayList<PVector>();
 int generationVal = 1;
 int bestStepCount = -1;
 int brainSize = 2500;
+int currBrainSize = brainSize;
 int population = 2000;
 boolean started = false;
 boolean paused = true;
@@ -68,6 +69,11 @@ void draw() {
     textAlign(RIGHT);
     text("Mutation Rate: " + mutationRate, width-20, height-20); 
   
+    // draw countdown bar
+    fill(255, 0, 0);
+    println(currBrainSize);
+    rect(0, height-10, width, 10);
+  
     if (test.allDotsDead()) {
       //genetic algorithm
       test.calculateFitness();
@@ -76,7 +82,7 @@ void draw() {
     } else {
       //if any of the dots are still alive then update and then show them
       if (paused) { 
-        textSize(48); textAlign(CENTER); text("PRESS SPACE TO CONTINUE", width/2, height/2); 
+        fill(0, 102, 153); textSize(48); textAlign(CENTER); text("PRESS SPACE TO CONTINUE", width/2, height/2); 
       } else test.update();
       test.show();
     }

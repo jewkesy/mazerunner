@@ -92,7 +92,7 @@ class Population {
     }
 
     dots = newDots.clone();
-    gen ++;
+    gen++;
     //if (gen > 2) {exit();}
     generationVal = gen;
   }
@@ -171,6 +171,9 @@ class Population {
     //if this dot reached the goal then reset the minimum number of steps it takes to get to the goal
     if (dots[bestDot].reachedGoal) {
       minStep = dots[bestDot].brain.step;
+    } else {
+      minStep = brainSize;
     }
+    currBrainSize = minStep;
   }
 }

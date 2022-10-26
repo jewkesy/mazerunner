@@ -2,16 +2,17 @@ int x1,y1,x2,y2;
 boolean boxing = false;
 
 void keyPressed(){
-  println(key);
+  //println(key);
   if (key == ' ') {
     started = true;
     paused=!paused;
-  } else if (key == '-') {
-    
-  } else if (key == '+') {
-  
+  } else if (key == '-' || key == '_' || (key == CODED && keyCode == DOWN)) {
+    mutationRate -= 0.01;
+    if (mutationRate <= 0) mutationRate = 0.01;
+  } else if (key == '+' || key == '=' || (key == CODED && keyCode == UP)) {
+    mutationRate += 0.01;
   }
-  
+  mutationRate = abs(mutationRate);
 }
 
 void mousePressed(){

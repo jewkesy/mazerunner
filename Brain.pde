@@ -23,7 +23,6 @@ class Brain {
     for (int i = 0; i < directions.length; i++) {
       clone.directions[i] = directions[i].copy();
     }
-
     return clone;
   }
 
