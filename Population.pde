@@ -22,7 +22,7 @@ class Population {
     for (int i = 1; i< dots.length; i++) {
       dots[i].show();
     }
-    dots[0].show();
+    dots[0].show();  // show best on top
   }
 
   //-------------------------------------------------------------------------------------------------------------------------------
@@ -35,10 +35,6 @@ class Population {
         dots[i].update();
       }
     }
-  }
-
-  boolean corpseHere(int x, int y) {
-    return false;
   }
 
   //-----------------------------------------------------------------------------------------------------------------------------------
@@ -93,7 +89,6 @@ class Population {
 
     dots = newDots.clone();
     gen++;
-    //if (gen > 2) {exit();}
     generationVal = gen;
   }
 
