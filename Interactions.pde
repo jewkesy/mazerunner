@@ -1,8 +1,10 @@
 int x1,y1,x2,y2;
+boolean mPressed = false;
+boolean kShift = false;
 boolean boxing = false;
 
 void keyPressed(){
-  println("Key: "+ key);
+  println("Key: "+ key + " " + keyCode);
   if (key == ' ') {
     started = true;
     paused=!paused;
@@ -21,17 +23,26 @@ void keyPressed(){
     loadObsticles(key);
   } else if (key == 'C') {
     clearObsticles();
+  } else if (key == CODED && keyCode == SHIFT) {
+    kShift = true;
   }
   mutationRate = abs(mutationRate);
 }
 
+void keyReleased() {
+  if (key == CODED && keyCode == SHIFT) kShift = false;
+}
+
+
 void mousePressed(){
+  mPressed = true;
   boxing = true;
   x1 = x2 = mouseX;
   y1 = y2 = mouseY; 
 }
 
 void mouseDragged(){
+  println("Key: "+ key + " " + keyCode);
   x2 = mouseX;
   y2 = mouseY;
   
@@ -42,7 +53,8 @@ void mouseDragged(){
   if (y2 > height) y2 = height;  
 }
 
-void mouseReleased() {  
+void mouseReleased() {
+  mPressed = false;
   // handled drawing backwards
   int topLeftX = x1;
   if (x1 > x2) {topLeftX = x2; x2 = x1; x1 = topLeftX;}
@@ -54,11 +66,13 @@ void mouseReleased() {
     
   if (w < 2) return;
   if (h < 2) return;
+  println("mouseReleased", x1, y1, w, h);
   
   boxing = false;
-  Obsticle o = new Obsticle("rect", x1, y1, w, h);
-  println(x1, y1, w, h);
-  obsticles.add(o);
+  
+  if (kShift) obsticles.add(new Obsticle("circle", x1, y1, w, h));
+  else obsticles.add(new Obsticle("rect", x1, y1, w, h));
+
 }
 
 void saveObsticles() {

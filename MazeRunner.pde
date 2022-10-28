@@ -30,13 +30,23 @@ void draw() {
   //draw obstacle(s)
   for(Obsticle o : obsticles) {
     fill(233, 233, 233);
-    if (Collisions.circleRect(mouseX, mouseY, 1, o.x, o.y, o.w, o.h)) fill(233, 0, 0);
-    if (o.type.equals("rect")) rect(o.x, o.y, o.w, o.h);
+    
+    if (o.type.equals("rect")) {
+      if (Collisions.circleRect(mouseX, mouseY, 1, o.x, o.y, o.w, o.h)) fill(233, 0, 0);
+      rect(o.x, o.y, o.w, o.h);
+    } else if (o.type.equals("circle")) {
+      if (Collisions.circleCircle(mouseX, mouseY, 1, o.x, o.y, o.w/2)) fill(233, 0, 0);
+      circle(o.x, o.y, o.w);
+    }
   }
 
   if (boxing) {
     fill(133, 133, 133);
-    rect(x1, y1, x2-x1, y2-y1);
+    if (kShift) {
+      circle(x1, y1, x2-x1);
+    } else {
+      rect(x1, y1, x2-x1, y2-y1);
+    }
   }
 
   if (nearest.x != -1 && nearest.y != -1) {

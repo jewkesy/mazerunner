@@ -112,16 +112,17 @@ class Dot {
         reachedGoal = true;
       } else {
         for(Obsticle o : obsticles) {
-          if (o.type.equals("rect"))
+          if (o.type.equals("rect")) {
             if (Collisions.circleRect(pos.x, pos.y, dotWidth/2, o.x, o.y, o.w, o.h)) {
               //Bounce(1, -1);
               dead = true;
             }
-            //if(pos.x > o.x && pos.x < o.x + o.w && pos.y > o.y && pos.y < o.y + o.h) {
-            //  //the point is inside the rectangle
-            //  dead = true;
-            //}
-        
+          }
+          else if (o.type.equals("circle")) {
+            if (Collisions.circleCircle(pos.x, pos.y, dotWidth/2, o.x, o.y, o.w/2)) {
+              dead = true;
+            }
+          }
         }
       }
        
