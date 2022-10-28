@@ -45,7 +45,7 @@ class Dot {
     //start the dots at the bottom of the window with a no velocity or acceleration
     //pos = new PVector(width/2, height- 10);
     id = createID(idLength);
-    pos = new PVector(750,750);
+    pos = new PVector(50,750);
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
     route = new ArrayList<PVector>();
@@ -88,9 +88,6 @@ class Dot {
     pos.add(vel);
     route.add(new PVector(pos.x, pos.y));
     furthestRoute.add(new PVector(pos.x, pos.y));
-    //println(vel.x, vel.y);
-    //println("Dot.move", route.size(), route);
-    //println("Dot.move", route.size());
   }
   
   // hit an obstacle, so bounce off
@@ -115,15 +112,15 @@ class Dot {
         reachedGoal = true;
       } else {
         for(Obsticle o : obsticles) {
-          if (o.type == "rect")
-            if (Collisions.circleRect(pos.x, pos.y, dotWidth, o.x, o.y, o.w, o.h)) {
+          if (o.type.equals("rect"))
+            if (Collisions.circleRect(pos.x, pos.y, dotWidth/2, o.x, o.y, o.w, o.h)) {
               //Bounce(1, -1);
               dead = true;
             }
-            if(pos.x > o.x && pos.x < o.x + o.w && pos.y > o.y && pos.y < o.y + o.h) {
-              //the point is inside the rectangle
-              dead = true;
-            }
+            //if(pos.x > o.x && pos.x < o.x + o.w && pos.y > o.y && pos.y < o.y + o.h) {
+            //  //the point is inside the rectangle
+            //  dead = true;
+            //}
         
         }
       }
@@ -147,7 +144,6 @@ class Dot {
   void calculateExplorer() {
     float distanceFromStart = dist(pos.x, pos.y, 750, 750);
     explorer = distanceFromStart;
-    //println(explorer);
   }
 
   //---------------------------------------------------------------------------------------------------------------------------------------

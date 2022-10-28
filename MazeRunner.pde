@@ -1,5 +1,6 @@
 Population test;
-PVector goal  = new PVector(750, 50);
+PVector goal = new PVector(750, 50);
+PVector startingLine = new PVector(250, 250);
 PVector nearest = new PVector(-1, -1);
 ArrayList<PVector> bestRoute = new ArrayList<PVector>();
 ArrayList<PVector> furthestRoute = new ArrayList<PVector>();
@@ -30,7 +31,7 @@ void draw() {
   for(Obsticle o : obsticles) {
     fill(233, 233, 233);
     if (Collisions.circleRect(mouseX, mouseY, 1, o.x, o.y, o.w, o.h)) fill(233, 0, 0);
-    if (o.type == "rect") rect(o.x, o.y, o.w, o.h);
+    if (o.type.equals("rect")) rect(o.x, o.y, o.w, o.h);
   }
 
   if (boxing) {

@@ -2,15 +2,25 @@ int x1,y1,x2,y2;
 boolean boxing = false;
 
 void keyPressed(){
-  //println(key);
+  println("Key: "+ key);
   if (key == ' ') {
     started = true;
     paused=!paused;
   } else if (key == '-' || key == '_' || (key == CODED && keyCode == DOWN)) {
-    mutationRate -= 0.01;
+    if (mutationRate <= 0.01) {
+      mutationRate -= 0.0025;
+    } else {
+      mutationRate -= 0.01;
+    }
     if (mutationRate <= 0) mutationRate = 0.01;
   } else if (key == '+' || key == '=' || (key == CODED && keyCode == UP)) {
     mutationRate += 0.01;
+  } else if (key == 's') {
+    saveObsticles();
+  } else if (key == 'l' || key == 'L') {
+    loadObsticles(key);
+  } else if (key == 'C') {
+    clearObsticles();
   }
   mutationRate = abs(mutationRate);
 }
@@ -47,5 +57,42 @@ void mouseReleased() {
   
   boxing = false;
   Obsticle o = new Obsticle("rect", x1, y1, w, h);
+  println(x1, y1, w, h);
   obsticles.add(o);
+}
+
+void saveObsticles() {
+  if (obsticles.size() == 0) return;
+  JSONArray values = new JSONArray();
+  
+  int idx = 0;
+  for(Obsticle o : obsticles) {
+    JSONObject ob = new JSONObject();
+    ob.setString("type", o.type);
+    ob.setInt("x", o.x);
+    ob.setInt("y", o.y);
+    ob.setInt("w", o.w);
+    ob.setInt("h", o.h);
+    values.setJSONObject(idx, ob);
+    idx++;
+  }
+  saveJSONArray(values, "data/obsticles.json");
+  println("Saved!");
+}
+
+void loadObsticles(char keyP) {
+  if (keyP == 'L') clearObsticles();
+  
+  JSONArray values = loadJSONArray("data/obsticles.json");
+
+  for (int i = 0; i < values.size(); i++) {
+    JSONObject ob = values.getJSONObject(i); 
+    Obsticle o = new Obsticle(ob.getString("type"), ob.getInt("x"), ob.getInt("y"), ob.getInt("w"), ob.getInt("h"));
+    obsticles.add(o);
+  }
+  println("Loaded!");
+}
+
+void clearObsticles() {
+  obsticles = new ArrayList<Obsticle>();
 }
