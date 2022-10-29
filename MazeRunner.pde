@@ -2,6 +2,7 @@ Population test;
 PVector goal = new PVector(750, 50);
 PVector startingLine = new PVector(250, 250);
 PVector nearest = new PVector(-1, -1);
+ArrayList<PVector> firstRoute = new ArrayList<PVector>();
 ArrayList<PVector> bestRoute = new ArrayList<PVector>();
 ArrayList<PVector> furthestRoute = new ArrayList<PVector>();
 int generationVal = 1;
@@ -30,7 +31,7 @@ void draw() {
   //draw obstacle(s)
   for(Obsticle o : obsticles) {
     fill(233, 233, 233);
-    
+    stroke(153);
     if (o.type.equals("rect")) {
       if (Collisions.circleRect(mouseX, mouseY, 1, o.x, o.y, o.w, o.h)) fill(233, 0, 0);
       rect(o.x, o.y, o.w, o.h);
@@ -55,14 +56,18 @@ void draw() {
     ellipse(goal.x, goal.y, dist(nearest.x, nearest.y, goal.x, goal.y)*2, dist(nearest.x, nearest.y, goal.x, goal.y)*2);
   }
   
-  stroke(50, 50, 50);
+  stroke(155, 187, 151);
+  for(PVector p : firstRoute){
+    point(p.x, p.y);
+  }
+  stroke(0, 0, 0);
   for(PVector p : bestRoute){ //<>//
     point(p.x, p.y);
   }
-  stroke(255, 87, 51);
-  for(PVector p : furthestRoute){
-    point(p.x, p.y);
-  }
+  //stroke(255, 87, 51);
+  //for(PVector p : furthestRoute){
+  //  point(p.x, p.y);
+  //}
   
   stroke(0,0,0);
   
@@ -99,5 +104,16 @@ void draw() {
     textSize(48);
     textAlign(CENTER);
     text("PRESS SPACE TO START", width/2, height/2);
+    textSize(18);
+    text("PRESS 'UP' OR 'DOWN' TO ADJUST MUTATION RATE", width/2, height/2 + 25);
+    text("PRESS 's' TO SAVE OBSTICLES", width/2, height/2 + 45);
+    text("PRESS 'L' TO LOAD OBSTICLES", width/2, height/2 + 65);
+    text("PRESS 'l' TO LOAD OBSTICLES, PRESERVING NEW ONES", width/2, height/2 + 85);
+    text("PRESS 'C' TO CLEAR OBSTICLES", width/2, height/2 + 105);
+    text("PRESS 'SPACE' TO PAUSE", width/2, height/2 + 125);
+    
+    text("USE MOUSE TO DRAW OBSTICLES", width/2, height/2 + 145);
+    text("HOLD SHIFT TO DRAW CIRCLE OBSTICLES", width/2, height/2 + 165);
+    
   }
 }

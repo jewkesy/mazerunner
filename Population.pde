@@ -66,19 +66,6 @@ class Population {
     newDots[0] = dots[bestDot].gimmeBaby(); //the champion lives on 
     newDots[0].isBest = true;
     
-    //int groupSize = newDots.length/2;
-    
-    //for (int i = 1; i < groupSize; i++) {
-    //  newDots[i] = dots[bestDot].gimmeBaby();
-    //}
-    
-    //newDots[groupSize] = dots[travellerDot].gimmeBaby(); //the traveller lives on 
-    //newDots[groupSize].isTraveller = true;
-    
-    //for (int i = groupSize+1; i < newDots.length; i++) {
-    //  newDots[i] = dots[travellerDot].gimmeBaby();
-    //}
-
     for (int i = 1; i < newDots.length; i++) {
       //select parent based on fitness
       Dot parent = selectParent();
@@ -154,17 +141,15 @@ class Population {
 
     bestDot = maxIndex;
     travellerDot = travellerIndex;
-    //Dot d = dots[bestDot];
-    //Dot t = dots[travellerDot];
     bestRoute = dots[bestDot].route;
     furthestRoute = dots[travellerDot].furthestRoute;
-    //println("Population.setBestDot", bestRoute.size()); //<>// //<>//
-    
+ //<>//
     nearest.x = dots[bestDot].pos.x;
     nearest.y = dots[bestDot].pos.y;
     bestStepCount = dots[bestDot].brain.step;
     //if this dot reached the goal then reset the minimum number of steps it takes to get to the goal
     if (dots[bestDot].reachedGoal) {
+      if (firstRoute.size() == 0) firstRoute = dots[bestDot].route;
       minStep = dots[bestDot].brain.step;
     } else {
       minStep = brainSize;
