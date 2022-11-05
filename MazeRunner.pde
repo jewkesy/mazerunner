@@ -1,6 +1,6 @@
 Population test;
-PVector goal = new PVector(750, 50);
-PVector startingLine = new PVector(250, 250);
+PVector goal = new PVector(750, 50, 15);
+PVector startingLine = new PVector(50, 750);
 PVector nearest = new PVector(-1, -1);
 ArrayList<PVector> firstRoute = new ArrayList<PVector>();
 ArrayList<PVector> bestRoute = new ArrayList<PVector>();
@@ -12,8 +12,10 @@ int currBrainSize = brainSize;
 int population = 2000;
 boolean started = false;
 boolean paused = true;
+boolean dotPoV = false;
 float mutationRate = 0.03;
 
+ArrayList<Obsticle> obsticles = new ArrayList<Obsticle>();
 ArrayList<PVector> graveyard = new ArrayList<PVector>();
 
 void setup() {
@@ -22,8 +24,9 @@ void setup() {
   size(800, 800); //size of the window
   frameRate(60); //increase this to make the dots go faster, default is 100
   test = new Population(population);//create a new population with 1000 members
+  createRandomObsticles();
 }
-ArrayList<Obsticle> obsticles = new ArrayList<Obsticle>();
+
 
 void draw() { 
   background(255);
@@ -32,6 +35,8 @@ void draw() {
   for(Obsticle o : obsticles) {
     fill(233, 233, 233);
     stroke(153);
+    if (dotPoV) {fill(255, 255, 255);stroke(255);}
+    
     if (o.type.equals("rect")) {
       if (Collisions.circleRect(mouseX, mouseY, 1, o.x, o.y, o.w, o.h)) fill(233, 0, 0);
       rect(o.x, o.y, o.w, o.h);
@@ -56,7 +61,7 @@ void draw() {
     ellipse(goal.x, goal.y, dist(nearest.x, nearest.y, goal.x, goal.y)*2, dist(nearest.x, nearest.y, goal.x, goal.y)*2);
   }
   
-  stroke(155, 187, 151);
+  stroke(255, 165, 0);
   for(PVector p : firstRoute){
     point(p.x, p.y);
   }
@@ -73,7 +78,7 @@ void draw() {
   
   //draw goal
   fill(249, 83, 53);
-  ellipse(goal.x, goal.y, 15, 15);
+  ellipse(goal.x, goal.y, goal.z, goal.z);
   
   if (started) {
     if (test.allDotsDead()) {

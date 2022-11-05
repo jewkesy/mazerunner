@@ -17,6 +17,10 @@ void keyPressed(){
     if (mutationRate <= 0) mutationRate = 0.01;
   } else if (key == '+' || key == '=' || (key == CODED && keyCode == UP)) {
     mutationRate += 0.01;
+  } else if (key == 'p') {
+    dotPoV = !dotPoV;
+  } else if (key == 'r') {
+     createRandomObsticles();
   } else if (key == 's') {
     saveObsticles();
   } else if (key == 'l' || key == 'L') {
@@ -73,6 +77,43 @@ void mouseReleased() {
   if (kShift) obsticles.add(new Obsticle("circle", x1, y1, w, h));
   else obsticles.add(new Obsticle("rect", x1, y1, w, h));
 
+}
+
+void createRandomObsticles() {
+  clearObsticles();
+
+  ArrayList<Obsticle> circles = new ArrayList<Obsticle>();
+  ArrayList<PVector> points = new ArrayList<PVector>();
+
+  circles.add(new Obsticle("circle", (int)goal.x, (int)goal.y, (int)goal.z*4, (int)goal.z*4));
+  circles.add(new Obsticle("circle", (int)startingLine.x, (int)startingLine.y, (int)goal.z*4, (int)goal.z*4));
+  points.add(new PVector(goal.x, goal.y, goal.z*4));
+  points.add(new PVector(startingLine.x, startingLine.y, goal.z*4));
+  var o = ceil(random(50, 120));
+  var buffer = ceil(random(2, 5));
+  var protection = 0;
+  
+  while (points.size() < o) {
+    int x = (int)random(width);
+    int y = (int)random(height);
+    int r = (int)random(6, 72);
+
+    Obsticle circle = new Obsticle("circle", x, y, r*2, r*2);
+    PVector point = new PVector(x, y, r);
+    var overlapping = false;
+
+    for(PVector p : points) {
+      var d = dist(point.x, point.y, p.x, p.y);
+      if (d < (r + p.z + buffer)) overlapping = true;
+    }
+    if (!overlapping) {
+        points.add(point);
+        obsticles.add(circle);
+      }
+    
+    protection++;
+    if (protection > 10000) break;
+  }
 }
 
 void saveObsticles() {

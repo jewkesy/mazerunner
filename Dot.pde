@@ -45,7 +45,7 @@ class Dot {
     //start the dots at the bottom of the window with a no velocity or acceleration
     //pos = new PVector(width/2, height- 10);
     id = createID(idLength);
-    pos = new PVector(50,750);
+    pos = new PVector(startingLine.x, startingLine.y);
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
     route = new ArrayList<PVector>();
@@ -108,7 +108,7 @@ class Dot {
       } else if (pos.y < dotWidth || pos.y > height - dotWidth) {
         dead = true;
         //Bounce(1, -1);
-      } else if (Collisions.circleCircle(pos.x, pos.y, dotWidth/2, goal.x, goal.y, 10)) {
+      } else if (Collisions.circleCircle(pos.x, pos.y, dotWidth/2, goal.x, goal.y, goal.z/2)) {
         reachedGoal = true;
       } else {
         for(Obsticle o : obsticles) {
