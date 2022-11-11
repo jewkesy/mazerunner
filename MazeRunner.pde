@@ -1,4 +1,4 @@
-Population test;
+Population swarm;
 PVector goal = new PVector(750, 50, 15);
 PVector startingLine = new PVector(50, 750);
 PVector nearest = new PVector(-1, -1);
@@ -15,6 +15,9 @@ boolean paused = true;
 boolean dotPoV = false;
 float mutationRate = 0.03;
 
+int noImprovementCounter = 0;
+int prevBestStepCount = bestStepCount;
+
 ArrayList<Obsticle> obsticles = new ArrayList<Obsticle>();
 ArrayList<PVector> graveyard = new ArrayList<PVector>();
 
@@ -23,7 +26,7 @@ void setup() {
   //surface.setResizable(true);
   size(800, 800); //size of the window
   frameRate(60); //increase this to make the dots go faster, default is 100
-  test = new Population(population);//create a new population with 1000 members
+  swarm = new Population(population);//create a new population with 1000 members
   createRandomObsticles();
 }
 
@@ -81,17 +84,32 @@ void draw() {
   ellipse(goal.x, goal.y, goal.z, goal.z);
   
   if (started) {
-    if (test.allDotsDead()) {
+    if (swarm.allDotsDead()) {
       //genetic algorithm
-      test.calculateFitness();
-      test.naturalSelection();
-      test.mutateDemBabies();
+      swarm.calculateFitness();
+      swarm.naturalSelection();
+      swarm.mutateDemBabies();
+      
+      if (bestStepCount == prevBestStepCount) noImprovementCounter++;
+      else if (bestStepCount < prevBestStepCount) {
+        noImprovementCounter = 0;
+        mutationRate += 0.005;
+        prevBestStepCount = bestStepCount;
+      }
+      else prevBestStepCount = bestStepCount;
+      
+      if (noImprovementCounter > 10) {
+        noImprovementCounter = 0;
+        mutationRate -= 0.005;
+        if (mutationRate < 0) mutationRate = 0.01;
+      }
+      println(noImprovementCounter);
     } else {
       //if any of the dots are still alive then update and then show them
       if (paused) { 
         fill(0, 102, 153); textSize(48); textAlign(CENTER); text("PRESS SPACE TO CONTINUE", width/2, height/2); 
-      } else test.update();
-      test.show();
+      } else swarm.update();
+      swarm.show();
     }
   }
   
